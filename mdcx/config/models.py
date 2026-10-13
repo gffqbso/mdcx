@@ -411,9 +411,9 @@ class Config(BaseModel):
                 site_prority=[Website.THEPORNDB, Website.OFFICIAL, Website.DMM, Website.JAVDB],
                 language=Language.JP,
             ),
-            CrawlerResultFields.THUMB: FieldConfig(site_prority=[Website.THEPORNDB, Website.DMM]),
-            CrawlerResultFields.POSTER: FieldConfig(site_prority=[Website.THEPORNDB, Website.DMM]),
-            CrawlerResultFields.EXTRAFANART: FieldConfig(site_prority=[Website.THEPORNDB, Website.DMM]),
+            CrawlerResultFields.THUMB: FieldConfig(site_prority=[Website.JAVDB, Website.THEPORNDB, Website.DMM]),
+            CrawlerResultFields.POSTER: FieldConfig(site_prority=[Website.JAVDB, Website.THEPORNDB, Website.DMM]),
+            CrawlerResultFields.EXTRAFANART: FieldConfig(site_prority=[Website.JAVDB, Website.THEPORNDB, Website.DMM]),
             CrawlerResultFields.TRAILER: FieldConfig(
                 site_prority=[Website.THEPORNDB, Website.OFFICIAL, Website.DMM, Website.JAVDB]
             ),
