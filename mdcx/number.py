@@ -275,3 +275,8 @@ def remove_escape_string1(filename: str, escape_string_list: list[str], replace_
     for each in short_strings:
         filename = re.sub(rf"[-_ .\[]{each.upper()}[-_ .\]]", "-", filename)
     return filename.replace("--", "-").strip("-_ .")
+
+
+def get_number_from_url(url: str, escape_string_list: list[str]) -> str:
+    """从 STRM 文件内容中的 URL 提取番号，逻辑与 get_file_number 完全一致"""
+    return get_file_number(url, escape_string_list)

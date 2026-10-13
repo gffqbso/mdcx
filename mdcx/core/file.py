@@ -15,7 +15,7 @@ from ..models.enums import FileMode
 from ..models.flags import Flags
 from ..models.log_buffer import LogBuffer
 from ..models.types import BaseCrawlerResult, CrawlersResult, FileInfo, OtherInfo
-from ..number import get_file_number, get_number_letters, is_uncensored
+from ..number import get_file_number, get_number_from_url, get_number_letters, is_uncensored
 from ..signals import signal
 from ..utils import nfd2c, split_path
 from ..utils.file import copy_file_async, delete_file_async, move_file_async
@@ -446,7 +446,20 @@ async def get_file_info_v2(file_path: Path, copy_sub: bool = True) -> FileInfo:
 
         # 获取番号
         if not movie_number:
-            movie_number = get_file_number(file_path_str, manager.computed.escape_string_list)
+            if file_ex.lower() == ".strm":
+                # STRM 文件：从文件内容读取 URL，再从 URL 提取番号
+                try:
+                    async with aiofiles.open(file_path, "r", encoding="utf-8") as f:
+                        url = (await f.read()).strip()
+                    if url:
+                        movie_number = get_number_from_url(url, manager.computed.escape_string_list)
+                        optional_data["appoint_url"] = url
+                    else:
+                        movie_number = get_file_number(file_path_str, manager.computed.escape_string_list)
+                except Exception:
+                    movie_number = get_file_number(file_path_str, manager.computed.escape_string_list)
+            else:
+                movie_number = get_file_number(file_path_str, manager.computed.escape_string_list)
 
         # 259LUXU-1111, 非mgstage、avsex去除前面的数字前缀
         temp_n = re.findall(r"\d{3,}([a-zA-Z]+-\d+)", movie_number)

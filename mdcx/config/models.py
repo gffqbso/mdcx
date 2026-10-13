@@ -113,6 +113,7 @@ class Config(BaseModel):
             ".webm",
             ".iso",
             ".mpg",
+            ".strm",
         ],
         title="媒体类型",
     )
