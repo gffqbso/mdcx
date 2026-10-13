@@ -581,7 +581,9 @@ async def check_file(file_path: Path, file_escape_size: float) -> bool:
     if not await aiofiles.os.path.exists(file_path):
         LogBuffer.error().write("文件不存在")
         return False
-    if NoEscape.NO_SKIP_SMALL_FILE not in manager.config.no_escape:
+    # .strm 文件是指向URL的快捷方式，不检查文件大小
+    file_ex = Path(file_path).suffix.lower()
+    if file_ex != ".strm" and NoEscape.NO_SKIP_SMALL_FILE not in manager.config.no_escape:
         file_size = await aiofiles.os.path.getsize(file_path) / float(1024 * 1024)
         if file_size < file_escape_size:
             LogBuffer.error().write(
